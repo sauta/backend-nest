@@ -5,22 +5,7 @@ pipeline {
             steps {
                 sh 'echo hola a todos desde el pipeline' // Shell command to build the application
             }
-        },
-        stage('Compile') { // Stage for compiling the application
-            steps {
-                echo 'Compiling...'
-            }
-        },
-        stage('Test') { // Stage for testing the application
-            steps {
-                echo 'Testing...'
-            }
-        },
-        stage('Deploy') { // Stage for deploying the application
-            steps {
-                echo 'Deploying...' 
-            }
         }
     }
-    }
-   }
+ }
+
