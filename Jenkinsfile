@@ -42,3 +42,5 @@ pipeline {
     environment {
         MY_ENV_VAR = 'Hello, World!' // Define an environment variable      
 }
+    }
+    }
