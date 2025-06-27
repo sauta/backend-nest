@@ -21,26 +21,5 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            echo 'This will always run after the stages complete.'
-        }
-        success {
-            echo 'This will run only if the pipeline succeeds.'
-        }
-        failure {
-            echo 'This will run only if the pipeline fails.'
-        }
-        unstable {
-            echo 'This will run if the pipeline is marked as unstable.'
-        
-        }
-        changed {
-            echo 'This will run if the pipeline status has changed since the last run.'
-        }
     }
-    environment {
-        MY_ENV_VAR = 'Hello, World!' // Define an environment variable      
-}
-    }
-    }
+   }
