@@ -16,7 +16,7 @@ pipeline {
                 sh 'echo "Saliendo del saludo"' // Shell command to build the application
             }
         }
-        stage('Build and test') { // Stage for building the application  
+        stage('Build-and-test') { // Stage for building the application  
             agent {
                 docker {
                     image 'node:22' // Use a Docker image with Node.js version 22
