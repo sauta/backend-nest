@@ -1,24 +1,57 @@
 pipeline {
-    agent any // This specifies that the pipeline can run on any available agent
-    environment { // Define environment variables for the pipeline
-        NPM_CONFIG_CACHE = '$[WORKSPACE]/.npm' // Path to npm cache directory
-        NPM_CONFIG_USERCONFIG = '$[WORKSPACE]/.npmrc' // Path to npm configuration file
-        NPM_CONFIG_LOGLEVEL = 'warn' // Set npm log level to warn
+    agent any
+    // escenarios -> escenario -> pasos
+    environment{
+        NPM_CONFIG_CACHE= "${WORKSPACE}/.npm"
+        dockerImagePrefix = "us-west1-docker.pkg.dev/lab-agibiz/docker-repository"
+        registry = "https://us-west1-docker.pkg.dev"
+        registryCredentials = "gcp-registry"
     }
-    stages { // Define the stages of the pipeline
-        stage('in-Hello') { // Stage for building the application  
-          steps {
-                sh 'echo "hola a todos desde el pipeline"' // Shell command to build the application
+    stages{
+        stage ("saludo a usuario") {
+            steps {
+                sh 'echo "comenzado mi pipeline"'
             }
         }
-        stage('out-Hello') { // Stage for building the application
+        stage ("salida de los saludos a usuario") {
             steps {
-                sh 'echo "Saliendo del saludo"' // Shell command to build the application
+                sh 'echo "saliendo de este grupo de escenarios"'
             }
         }
-        stage('Build-and-publish') { // Stage for building and publishing the application
+        stage ("proceso de build y test") {
+            agent {
+                docker {
+                    image 'node:22'
+                    reuseNode true
+                }
+            }
+            stages {
+                stage("instalacion de dependencias"){
+                    steps {
+                        sh 'npm ci'
+                    }
+                }
+                stage("ejecucion de pruebas"){
+                    steps {
+                        sh 'npm run test:cov'
+                    }
+                }
+                stage("construccion de la aplicacion"){
+                    steps {
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+        stage ("build y push de imagen docker"){
             steps {
-                sh 'docker build -t backend-nest-cmc .'
+                script {
+                    docker.withRegistry("${registry}", registryCredentials ){
+                        sh "docker build -t backend-nest-cmd ."
+                        sh "docker tag backend-nest-cmd ${dockerImagePrefix}/backend-nest-cmd"
+                        sh "docker push ${dockerImagePrefix}/backend-nest-cmd"
+                    }
+                }
             }
         }
     }
