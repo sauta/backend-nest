@@ -24,10 +24,10 @@ pipeline {
                     reuseNode true // Reuse the node for this stage
                 }
             }
-            steps('build') {
+            steps{
                 sh 'npm ci' // Shell command to build the application
             }
-            steps('test') {
+            steps{
                 sh 'npm test:cov' // Shell command to run tests
             }
         }
