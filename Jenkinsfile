@@ -16,19 +16,6 @@ pipeline {
                 sh 'echo "Saliendo del saludo"' // Shell command to build the application
             }
         }
-        stage('Build-and-test') { // Stage for building the application  
-            agent {
-                docker {
-                    image 'node:22' // Use a Docker image with Node.js version 22
-                    args '-u root:root' // Run the container as root user
-                    reuseNode true // Reuse the node for this stage
-                }
-            }
-            steps {
-                sh 'npm ci' // Shell command to build the application
-                sh 'npm test:cov' // Shell command to run tests
-            }
-        }
         stage('Build-and-publish') { // Stage for building and publishing the application
             steps {
                 sh 'docker build -t backend-nest-cmc .'
