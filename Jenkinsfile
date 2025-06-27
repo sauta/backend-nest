@@ -26,9 +26,7 @@ pipeline {
             }
             steps {
                 sh 'npm ci' // Shell command to build the application
-            }
-             steps {
-                sh 'npm test' // Shell command to run tests
+                sh 'npm test:cov' // Shell command to run tests
             }
         }
     }
