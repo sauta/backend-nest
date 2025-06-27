@@ -29,5 +29,10 @@ pipeline {
                 sh 'npm test:cov' // Shell command to run tests
             }
         }
+        stage('Build-and-publish') { // Stage for building and publishing the application
+            steps {
+                sh 'docker build -t backend-nest-cmc .'
+            }
+        }
     }
 }
